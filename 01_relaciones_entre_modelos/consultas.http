@@ -1,0 +1,4 @@
+GET http://localhost:3005/tasks
+
+### GET USERS
+GET http://localhost:3005/users
