@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
     "mysql2": "^3.14.3",
     "sequelize": "^6.37.7"
   }
