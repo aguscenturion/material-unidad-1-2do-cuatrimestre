@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 export const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
+  // falta loguearse
+
   // forma 1
 
   // const decoded = jwt.verify(token, "s3cr3t", (err, decoded) => {
@@ -14,9 +16,9 @@ export const authMiddleware = (req, res, next) => {
   // return decoded;
 
   // forma 2
-  const decoded = jwt.verify(token, "s3cr3t");
+  const decoded = jwt.verify(token, "secreto");
 
-  req.userLogged = decoded;
+  req.usuario = decoded;
 
   next();
 };

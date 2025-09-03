@@ -3,7 +3,16 @@ import { TaskModel } from "../models/task.model.js";
 import { UserModel } from "../models/user.model.js";
 
 export const getAllTasks = async (req, res) => {
-  const userLogged = req.userLogged;
+  const userLogged = req.usuario;
+
+  if (!userLogged.role === "user") {
+    return res.status(401).json({
+      msg: "Usted no tiene los permisos",
+    });
+  }
+
+  // const token = req.cookies.token;
+  // const decoded = jwt.verify(token, "s3cr3t");
 
   try {
     const tasks = await TaskModel.findAll({

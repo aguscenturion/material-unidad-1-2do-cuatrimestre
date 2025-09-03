@@ -4,6 +4,13 @@ import { UserModel } from "../models/user.model.js";
 
 export const getAllPeople = async (req, res) => {
   try {
+    // const token = req.cookies.token;
+    // const decoded = jwt.verify(token, "s3cr3t");
+
+    // req.userLogged = decoded;
+
+    // next();
+
     const people = await PersonModel.findAll({
       // paranoid: false,
       include: {
@@ -22,6 +29,8 @@ export const getAllPeople = async (req, res) => {
 export const createPerson = async (req, res) => {
   // const { name, lastname } = req.body;
   try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, "s3cr3t");
     // const person = await PersonModel.create(req.body);
 
     return res.status(200).json({ msg: "creado correctamente" });
@@ -33,6 +42,8 @@ export const createPerson = async (req, res) => {
 
 export const updatePerson = async (req, res) => {
   try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, "s3cr3t");
     // if (typeof req.body === "object") {
     //   return res.status(404).json({ message: "Debe mandar algo" });
     // }
@@ -62,6 +73,8 @@ export const deletePerson = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const token = req.cookies.token;
+    const decoded = jwt.verify(token, "s3cr3t");
     const person = await PersonModel.findByPk(id);
 
     await person.destroy();

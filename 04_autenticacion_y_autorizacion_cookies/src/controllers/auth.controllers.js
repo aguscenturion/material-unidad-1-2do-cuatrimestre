@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { PersonModel } from "../models/person.model.js";
 import { UserModel } from "../models/user.model.js";
+import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 
 export const register = async (req, res) => {
   const { name, lastname, username, email, password } = req.body;
@@ -10,10 +11,12 @@ export const register = async (req, res) => {
       lastname: lastname,
     });
 
+    const hashedPassword = await hashPassword(password);
+
     await UserModel.create({
       username: username,
       email: email,
-      password: password,
+      password: hashedPassword,
       person_id: person.id,
     });
 
@@ -29,17 +32,32 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { username, password } = req.body;
+
   try {
     const user = await UserModel.findOne({
       where: {
         username: username,
-        password: password,
+        // password: askdjakshd123123,
       },
       include: {
         model: PersonModel,
         as: "person",
       },
     });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: "El usuario o la contraseña no coincide",
+      });
+    }
+
+    const isMatch = await comparePassword(password, user.password);
+
+    if (!isMatch) {
+      return res.status(404).json({
+        msg: "El usuario o la contraseña no coincide",
+      });
+    }
 
     if (!user) {
       return res.status(404).json({
